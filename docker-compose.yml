@@ -1,32 +1,28 @@
+version: '3.7'
+
 services:
-  evolutionapi:
-    image: devfullcycle/evolution-api
+  evolution:
+    image: athenda/evolution-api:latest # La imagen oficial y correcta
     container_name: evolution_api
-    # ...y el resto del archivo sigue igual
-    restart: unless-stopped # Le decimos que se reinicie solo si falla.
-
+    restart: unless-stopped
     ports:
-      - "8080:8080" # Hacemos que la API sea accesible en el puerto 8080.
-
+      - "8080:8080"
     environment:
-      # --- Configuración del Servidor ---
-      - PORT=8080
-      # --- Clave de API Global para la instancia ---
-      # Esta es la contraseña maestra para usar tu API. ¡Guárdala!
-      - API_KEY=Hodify_es_mi_clave_secreta_12345
-      
-      # --- Configuración de la Base de Datos (usará un archivo local) ---
-      - DATABASE_ENGINE=local-sqlite
-      - DATABASE_CONNECTION_URI=./instances.db
-      
-      # --- Configuración para guardar los datos de WhatsApp ---
-      - STORE_MESSAGES=true
-      - STORE_CONTACTS=true
-      - STORE_CHATS=true
-
+      - DATABASE_ENABLED=true
+      - DATABASE_ENGINE=mongodb
+      - DATABASE_CONNECTION_URI=mongodb://mongo:27017
+      - DATABASE_NAME=evolution_api
+      - API_KEY=${API_KEY} # Lee la API Key desde Dokploy
+      - AUTHENTICATION_TYPE=apikey
+      - AUTHENTICATION_API_KEY=${API_KEY}
     volumes:
-      # --- Aquí guardamos los datos para que no se borren ---
-      # Crea una carpeta "evolution_data" para la base de datos.
-      - ./evolution_data:/evolution/data
-      # Crea una carpeta "instances" para guardar las conexiones de WhatsApp.
-      - ./instances:/evolution/instances
+      - ./evolution_instances:/evolution/instances
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongodb
+    restart: unless-stopped
+    volumes:
+      - ./mongodb_data:/data/db
