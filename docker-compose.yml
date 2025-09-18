@@ -1,6 +1,23 @@
-version: '3'
+version: '3.8' # Usamos una versión más moderna y específica
+
 services:
-  evolutionapi:
-    image: nginx
+  evolutionapi: # ¡Este será el nombre definitivo de nuestro servicio!
+    # --- NECESITO QUE ENCUENTRES Y CONFIRMES LA IMAGEN CORRECTA ---
+    image: nombre/delaimagen:tag
+
+    # --- ¿QUÉ PUERTOS EXPONE LA API? ---
     ports:
-      - "80:80"
+      - "8080:8080" # Esto es un ejemplo, necesitamos el real
+
+    # --- ¿QUÉ VARIABLES DE ENTORNO NECESITA PARA ARRANCAR? ---
+    environment:
+      - SERVER_URL=https://tu-dominio.com # Ejemplo
+      - API_KEY=TU_API_KEY_SECRETA       # Ejemplo
+      # ...añadir todas las demás variables aquí
+
+    # --- ¿NECESITA GUARDAR DATOS PERMANENTES? ---
+    # Si no necesita guardar nada, esta sección se puede borrar.
+    volumes:
+      - ./evolution_data:/app/data # Esto es un ejemplo, necesitamos la ruta real
+
+    restart: unless-stopped # Buena práctica: reinicia el servicio si falla
