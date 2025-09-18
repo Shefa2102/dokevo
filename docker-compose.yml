@@ -1,9 +1,8 @@
-version: '3.8'
-
 services:
   evolutionapi:
     image: devfullcycle/evolution-api
-    container_name: evolution_api # Le damos un nombre fácil de identificar.
+    container_name: evolution_api
+    # ...y el resto del archivo sigue igual
     restart: unless-stopped # Le decimos que se reinicie solo si falla.
 
     ports:
