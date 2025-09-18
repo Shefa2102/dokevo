@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   evolutionapi:
-    image: devfullcycle/evolution-api# Aquí le decimos que use el molde oficial de Evolution API.
+    image: devfullcycle/evolution-api
     container_name: evolution_api # Le damos un nombre fácil de identificar.
     restart: unless-stopped # Le decimos que se reinicie solo si falla.
 
